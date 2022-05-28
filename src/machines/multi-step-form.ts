@@ -41,7 +41,7 @@ const multiStepFormMachine = createMachine<
         on: {
           CONFIRM_CONTACT: {
             target: 'enteringOrder',
-            actions: ['assignContactInfoToContext'],
+            actions: ['assignContactDataToContext'],
           },
         },
       },
@@ -53,7 +53,7 @@ const multiStepFormMachine = createMachine<
           },
           CONFIRM_ORDER: {
             target: 'enteringDetails',
-            actions: ['assignOrderToContext'],
+            actions: ['assignOrderDataToContext'],
           },
         },
       },
@@ -65,7 +65,7 @@ const multiStepFormMachine = createMachine<
           },
           CONFIRM_DETAILS: {
             target: 'confirming',
-            actions: ['assignDateToContext'],
+            actions: ['assignDetailsDataToContext'],
           },
         },
       },
@@ -107,16 +107,22 @@ const multiStepFormMachine = createMachine<
   {
     services: { submitPayment: () => () => {} },
     actions: {
-      assignDateToContext: assign((context, event) => {
-        if (event.type !== 'CONFIRM_DATE') return {};
+      assignContactDataToContext: assign((context, event) => {
+        if (event.type !== 'CONFIRM_CONTACT') return {};
         return {
-          dateInfo: event.info,
+          contactData: event.info,
         };
       }),
-      assignBeneficiaryInfoToContext: assign((context, event) => {
-        if (event.type !== 'CONFIRM_BENEFICIARY') return {};
+      assignOrderDataToContext: assign((context, event) => {
+        if (event.type !== 'CONFIRM_ORDER') return {};
         return {
-          beneficiaryInfo: event.info,
+          orderData: event.info,
+        };
+      }),
+      assignDetailsDataToContext: assign((context, event) => {
+        if (event.type !== 'CONFIRM_DETAILS') return {};
+        return {
+          detailsData: event.info,
         };
       }),
       assignErrorMessageToContext: assign((context, event: any) => {
@@ -124,8 +130,10 @@ const multiStepFormMachine = createMachine<
           errorMessage: event.data?.message || 'An unknown error occurred',
         };
       }),
-      clearErrorMessage: assign({
-        errorMessage: undefined,
+      clearErrorMessage: assign((context, event) => {
+        return {
+          errorMessage: undefined,
+        };
       }),
     },
   }
