@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 import { ContactData } from 'src/lib/types';
+import Progress from 'src/components/Progress';
 
 const telephoneValidation = new RegExp(/^\d([0-9 -]{0,10}\d)?$/);
 
@@ -31,6 +32,7 @@ export default function ContactStep() {
       <h2 className="text-2xl font-bold">Fancy Form</h2>
       <p className="mt-2 text-lg text-gray-600">This is a really sleek form.</p>
       <div className="mt-8 max-w-md ">
+        <Progress current={1} />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-1 gap-6">
             <label className="block">

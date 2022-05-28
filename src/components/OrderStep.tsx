@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 import { OrderData } from 'src/lib/types';
+import Progress from 'src/components/Progress';
 import Select from 'src/components/Select';
 
 const flavors = [
@@ -41,6 +42,7 @@ export default function OrderStep() {
       <h2 className="text-2xl font-bold">Fancy Form</h2>
       <p className="mt-2 text-lg text-gray-600">This is a really sleek form.</p>
       <div className="mt-8 max-w-md ">
+        <Progress current={2} />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-1 gap-6">
             <Select

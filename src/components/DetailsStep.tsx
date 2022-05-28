@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 import { AdditionalDetailsData } from 'src/lib/types';
+import Progress from 'src/components/Progress';
 
 const schema = z.object({
   details: z
@@ -29,6 +30,7 @@ export default function DetailsStep() {
       <h2 className="text-2xl font-bold">Fancy Form</h2>
       <p className="mt-2 text-lg text-gray-600">This is a really sleek form.</p>
       <div className="mt-8 max-w-md ">
+        <Progress current={3} />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-1 gap-6">
             <label className="block">

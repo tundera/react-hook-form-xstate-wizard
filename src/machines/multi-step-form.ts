@@ -1,4 +1,4 @@
-import { assign, createMachine } from 'xstate';
+import { assign, createMachine, ActorRefFrom } from 'xstate';
 
 import { ContactData, AdditionalDetailsData, OrderData } from '../lib/types';
 
@@ -140,3 +140,5 @@ const multiStepFormMachine = createMachine<
 );
 
 export default multiStepFormMachine;
+
+export type MultiStepFormService = ActorRefFrom<typeof multiStepFormMachine>;
