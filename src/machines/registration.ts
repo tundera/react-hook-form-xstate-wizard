@@ -1,19 +1,12 @@
 import { assign, createMachine } from 'xstate';
 
+import { ContactData, AdditionalDetailsData, OrderData } from '../lib/types';
+
 export interface MultiStepFormMachineContext {
-  beneficiaryInfo?: ContactInfo;
-  dateInfo?: DateInfo;
+  contactData?: ContactData;
+  orderData?: OrderData;
+  detailsData?: AdditionalDetailsData;
   errorMessage?: string;
-}
-
-interface ContactInfo {
-  name: string;
-  email: string;
-  currency: string;
-}
-
-interface DateInfo {
-  preferredData: string;
 }
 
 export type MultiStepFormMachineEvent =
@@ -22,11 +15,15 @@ export type MultiStepFormMachineEvent =
     }
   | {
       type: 'CONFIRM_CONTACT';
-      info: ContactInfo;
+      info: ContactData;
     }
   | {
-      type: 'CONFIRM_DATE';
-      info: DateInfo;
+      type: 'CONFIRM_ORDER';
+      info: OrderData;
+    }
+  | {
+      type: 'CONFIRM_DETAILS';
+      info: AdditionalDetailsData;
     }
   | {
       type: 'CONFIRM';
@@ -38,23 +35,35 @@ const multiStepFormMachine = createMachine<
 >(
   {
     id: 'multiStepForm',
-    initial: 'enteringBeneficiary',
+    initial: 'enteringContact',
     states: {
-      enteringBeneficiary: {
+      enteringContact: {
         on: {
-          CONFIRM_BENEFICIARY: {
-            target: 'enteringDate',
-            actions: ['assignBeneficiaryInfoToContext'],
+          CONFIRM_CONTACT: {
+            target: 'enteringOrder',
+            actions: ['assignContactInfoToContext'],
           },
         },
       },
-      enteringDate: {
-        id: 'enteringDate',
+      enteringOrder: {
+        id: 'enteringOrder',
         on: {
           BACK: {
-            target: 'enteringBeneficiary',
+            target: 'enteringContact',
           },
-          CONFIRM_DATE: {
+          CONFIRM_ORDER: {
+            target: 'enteringDetails',
+            actions: ['assignOrderToContext'],
+          },
+        },
+      },
+      enteringDetails: {
+        id: 'enteringDetails',
+        on: {
+          BACK: {
+            target: 'enteringOrder',
+          },
+          CONFIRM_DETAILS: {
             target: 'confirming',
             actions: ['assignDateToContext'],
           },
@@ -71,7 +80,7 @@ const multiStepFormMachine = createMachine<
             on: {
               CONFIRM: 'submitting',
               BACK: {
-                target: '#enteringDate',
+                target: '#enteringDetails',
               },
             },
           },

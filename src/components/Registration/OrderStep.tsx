@@ -2,6 +2,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
+import { OrderData } from '../../lib/types';
 import Select from '../Select';
 
 const flavors = [
@@ -20,11 +21,6 @@ const schema = z.object({
   flavor: z.enum(['chocolate', 'strawberry', 'vanilla']),
   size: z.enum(['small', 'regular', 'large']),
 });
-
-type OrderData = {
-  flavor: string;
-  size: string;
-};
 
 export default function OrderStep() {
   const { register, handleSubmit, formState } = useForm<OrderData>({

@@ -2,15 +2,13 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
+import { AdditionalDetailsData } from '../../lib/types';
+
 const schema = z.object({
   details: z
     .string()
     .max(250, { message: 'Limit additional details to 250 characters' }),
 });
-
-type AdditionalDetailsData = {
-  details: string;
-};
 
 export default function DetailsStep() {
   const { register, handleSubmit, formState } = useForm<AdditionalDetailsData>({

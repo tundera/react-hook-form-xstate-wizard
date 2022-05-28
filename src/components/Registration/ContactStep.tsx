@@ -2,6 +2,8 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
+import { ContactData } from '../../lib/types';
+
 const telephoneValidation = new RegExp(/^\d([0-9 -]{0,10}\d)?$/);
 
 const schema = z.object({
@@ -9,12 +11,6 @@ const schema = z.object({
   email: z.string().email('Email required'),
   phone: z.string().regex(telephoneValidation),
 });
-
-type ContactData = {
-  name: string;
-  email: string;
-  phone: string;
-};
 
 export default function ContactStep() {
   const { register, handleSubmit, formState } = useForm<ContactData>({

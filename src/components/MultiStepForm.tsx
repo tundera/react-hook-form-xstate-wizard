@@ -14,7 +14,7 @@ type RegistrationData = {
   birthdate: string;
 };
 
-export default function RegistrationWizard() {
+export default function MultiStepForm() {
   const { register, handleSubmit, formState } = useForm<RegistrationData>({
     resolver: zodResolver(schema),
   });
