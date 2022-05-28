@@ -1,9 +1,8 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import MultiStepForm from '../src/components/MultiStepForm';
-
-import RegistrationForm from '../src/components/MultiStepForm';
+import MultiStepForm from 'src/components/MultiStepForm';
+import { GlobalStateProvider } from 'src/context';
 
 const Home: NextPage = () => {
   return (
@@ -21,7 +20,9 @@ const Home: NextPage = () => {
           </a>
         </h1>
 
-        <MultiStepForm />
+        <GlobalStateProvider>
+          <MultiStepForm />
+        </GlobalStateProvider>
       </main>
 
       <footer className="flex h-24 w-full items-center justify-center border-t">

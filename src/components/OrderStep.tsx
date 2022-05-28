@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -5,6 +6,7 @@ import * as z from 'zod';
 import { OrderData } from 'src/lib/types';
 import Progress from 'src/components/Progress';
 import Select from 'src/components/Select';
+import { GlobalStateContext } from 'src/context';
 
 const flavors = [
   { label: 'Chocolate', value: 'chocolate' },
@@ -24,18 +26,10 @@ const schema = z.object({
 });
 
 export default function OrderStep() {
+  const { multiStepFormService } = useContext(GlobalStateContext);
   const { register, handleSubmit, formState } = useForm<OrderData>({
     resolver: zodResolver(schema),
   });
-
-  const onSubmit: SubmitHandler<OrderData> = async (data) => {
-    await new Promise<void>((resolve) =>
-      setTimeout(() => {
-        alert(JSON.stringify(data));
-        resolve();
-      }, 1000)
-    );
-  };
 
   return (
     <div className="py-12">
