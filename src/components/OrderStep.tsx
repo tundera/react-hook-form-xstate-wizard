@@ -31,6 +31,10 @@ export default function OrderStep() {
     resolver: zodResolver(schema),
   });
 
+  const onSubmit:SubmitHandler<OrderData>= (data) => {
+    multiStepFormService.send({})
+  }
+
   return (
     <div className="py-12">
       <h2 className="text-2xl font-bold">Fancy Form</h2>

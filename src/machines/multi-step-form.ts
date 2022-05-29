@@ -15,15 +15,15 @@ export type MultiStepFormMachineEvent =
     }
   | {
       type: 'CONFIRM_CONTACT';
-      info: ContactData;
+      value: ContactData;
     }
   | {
       type: 'CONFIRM_ORDER';
-      info: OrderData;
+      value: OrderData;
     }
   | {
       type: 'CONFIRM_DETAILS';
-      info: AdditionalDetailsData;
+      value: AdditionalDetailsData;
     }
   | {
       type: 'CONFIRM';
@@ -110,19 +110,19 @@ const multiStepFormMachine = createMachine<
       assignContactDataToContext: assign((context, event) => {
         if (event.type !== 'CONFIRM_CONTACT') return {};
         return {
-          contactData: event.info,
+          contactData: event.value,
         };
       }),
       assignOrderDataToContext: assign((context, event) => {
         if (event.type !== 'CONFIRM_ORDER') return {};
         return {
-          orderData: event.info,
+          orderData: event.value,
         };
       }),
       assignDetailsDataToContext: assign((context, event) => {
         if (event.type !== 'CONFIRM_DETAILS') return {};
         return {
-          detailsData: event.info,
+          detailsData: event.value,
         };
       }),
       assignErrorMessageToContext: assign((context, event: any) => {

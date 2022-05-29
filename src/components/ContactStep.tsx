@@ -1,9 +1,11 @@
+import { useContext } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 import { ContactData } from 'src/lib/types';
 import Progress from 'src/components/Progress';
+import { GlobalStateContext } from 'src/context';
 
 const telephoneValidation = new RegExp(/^\d([0-9 -]{0,10}\d)?$/);
 
@@ -14,6 +16,7 @@ const schema = z.object({
 });
 
 export default function ContactStep() {
+  const { multiStepFormService } = useContext(GlobalStateContext);
   const { register, handleSubmit, formState } = useForm<ContactData>({
     resolver: zodResolver(schema),
   });
@@ -64,7 +67,7 @@ export default function ContactStep() {
             </label>
             <div className="py-4">
               <button
-                className="inline-flex justify-center items-center px-4 py-4 font-semibold text-sm shadow rounded-md text-white bg-indigo-500 hover:bg-indigo-400 transition ease-in-out duration-150 cursor-not-allowed w-full"
+                className="inline-flex justify-center items-center px-4 py-4 font-semibold text-sm shadow rounded-md text-white bg-indigo-500 hover:bg-indigo-400 transition ease-in-out duration-150 w-full"
                 type="submit"
                 disabled={formState.isSubmitting}
               >
