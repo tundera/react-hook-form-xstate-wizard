@@ -1,11 +1,11 @@
-const STEPS = ['Contact', 'Order', 'Details', 'Summary'];
+const STEPS = ['Contact', 'Order', 'Details', 'Summary']
 
 type ProgressProps = {
-  current: number;
-};
+  current: number
+}
 
 const Progress = ({ current }: ProgressProps) => (
-  <div className="grid grid-cols-[repeat(4, 25%)]">
+  <div className='grid-cols-[repeat(4, 25%)] grid'>
     {STEPS.map((step, index) => (
       <div
         key={step}
@@ -22,6 +22,6 @@ const Progress = ({ current }: ProgressProps) => (
       </div>
     ))}
   </div>
-);
+)
 
-export default Progress;
+export default Progress

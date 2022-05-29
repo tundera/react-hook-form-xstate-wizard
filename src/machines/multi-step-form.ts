@@ -1,71 +1,83 @@
-import { assign, createMachine, ActorRefFrom } from 'xstate';
+import { assign, createMachine, ActorRefFrom } from 'xstate'
 
-import { ContactData, AdditionalDetailsData, OrderData } from '../lib/types';
+import { ContactInfo, AdditionalDetails, OrderInfo } from '../lib/types'
 
 export interface MultiStepFormMachineContext {
-  contactData?: ContactData;
-  orderData?: OrderData;
-  detailsData?: AdditionalDetailsData;
-  errorMessage?: string;
+  contact?: ContactInfo
+  order?: OrderInfo
+  details?: AdditionalDetails
+  errorMessage?: string
 }
 
 export type MultiStepFormMachineEvent =
   | {
-      type: 'BACK';
+      type: 'BACK'
     }
   | {
-      type: 'CONFIRM_CONTACT';
-      value: ContactData;
+      type: 'CONFIRM_CONTACT'
+      value: ContactInfo
     }
   | {
-      type: 'CONFIRM_ORDER';
-      value: OrderData;
+      type: 'CONFIRM_ORDER'
+      value: OrderInfo
     }
   | {
-      type: 'CONFIRM_DETAILS';
-      value: AdditionalDetailsData;
+      type: 'CONFIRM_DETAILS'
+      value: AdditionalDetails
     }
   | {
-      type: 'CONFIRM';
-    };
+      type: 'SUBMIT_ORDER'
+    }
 
-const multiStepFormMachine = createMachine<
-  MultiStepFormMachineContext,
-  MultiStepFormMachineEvent
->(
+const multiStepFormMachine = createMachine<MultiStepFormMachineContext, MultiStepFormMachineEvent>(
   {
     id: 'multiStepForm',
-    initial: 'enteringContact',
+    initial: 'contact',
     states: {
-      enteringContact: {
+      contact: {
         on: {
           CONFIRM_CONTACT: {
-            target: 'enteringOrder',
-            actions: ['assignContactDataToContext'],
+            target: 'order',
+            actions: assign((_context, event) => {
+              if (event.type !== 'CONFIRM_CONTACT') return {}
+              return {
+                contact: event.value,
+              }
+            }),
           },
         },
       },
-      enteringOrder: {
-        id: 'enteringOrder',
+      order: {
+        id: 'order',
         on: {
           BACK: {
-            target: 'enteringContact',
+            target: 'contact',
           },
           CONFIRM_ORDER: {
-            target: 'enteringDetails',
-            actions: ['assignOrderDataToContext'],
+            target: 'details',
+            actions: assign((_context, event) => {
+              if (event.type !== 'CONFIRM_ORDER') return {}
+              return {
+                order: event.value,
+              }
+            }),
           },
         },
       },
-      enteringDetails: {
-        id: 'enteringDetails',
+      details: {
+        id: 'details',
         on: {
           BACK: {
-            target: 'enteringOrder',
+            target: 'order',
           },
           CONFIRM_DETAILS: {
             target: 'confirming',
-            actions: ['assignDetailsDataToContext'],
+            actions: assign((_context, event) => {
+              if (event.type !== 'CONFIRM_DETAILS') return {}
+              return {
+                details: event.value,
+              }
+            }),
           },
         },
       },
@@ -78,9 +90,9 @@ const multiStepFormMachine = createMachine<
           idle: {
             exit: ['clearErrorMessage'],
             on: {
-              CONFIRM: 'submitting',
+              SUBMIT_ORDER: 'submitting',
               BACK: {
-                target: '#enteringDetails',
+                target: '#details',
               },
             },
           },
@@ -92,7 +104,11 @@ const multiStepFormMachine = createMachine<
               },
               onError: {
                 target: 'idle',
-                actions: 'assignErrorMessageToContext',
+                actions: assign((_context, event: any) => {
+                  return {
+                    errorMessage: event.data?.message || 'An unknown error occurred',
+                  }
+                }),
               },
             },
           },
@@ -107,38 +123,15 @@ const multiStepFormMachine = createMachine<
   {
     services: { submitPayment: () => () => {} },
     actions: {
-      assignContactDataToContext: assign((context, event) => {
-        if (event.type !== 'CONFIRM_CONTACT') return {};
-        return {
-          contactData: event.value,
-        };
-      }),
-      assignOrderDataToContext: assign((context, event) => {
-        if (event.type !== 'CONFIRM_ORDER') return {};
-        return {
-          orderData: event.value,
-        };
-      }),
-      assignDetailsDataToContext: assign((context, event) => {
-        if (event.type !== 'CONFIRM_DETAILS') return {};
-        return {
-          detailsData: event.value,
-        };
-      }),
-      assignErrorMessageToContext: assign((context, event: any) => {
-        return {
-          errorMessage: event.data?.message || 'An unknown error occurred',
-        };
-      }),
       clearErrorMessage: assign((context, event) => {
         return {
           errorMessage: undefined,
-        };
+        }
       }),
     },
-  }
-);
+  },
+)
 
-export default multiStepFormMachine;
+export default multiStepFormMachine
 
-export type MultiStepFormService = ActorRefFrom<typeof multiStepFormMachine>;
+export type MultiStepFormService = ActorRefFrom<typeof multiStepFormMachine>

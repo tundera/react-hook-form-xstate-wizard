@@ -1,9 +1,17 @@
-import type { AppProps } from 'next/app';
+import type { AppProps } from 'next/app'
 
-import 'src/styles/globals.css';
+import { inspect } from '@xstate/inspect'
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+import 'src/styles/globals.css'
+
+if (typeof window !== 'undefined') {
+  inspect({
+    /* options */
+  })
 }
 
-export default MyApp;
+function MyApp({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />
+}
+
+export default MyApp
