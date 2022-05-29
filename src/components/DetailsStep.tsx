@@ -29,7 +29,7 @@ export default function DetailsStep() {
   }
 
   return (
-    <div className='mt-8 max-w-md'>
+    <div className='mt-8'>
       <Progress current={3} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className='grid grid-cols-1 gap-6'>
@@ -37,9 +37,11 @@ export default function DetailsStep() {
             <span className='text-gray-700'>Additional details</span>
             <textarea className='mt-1 block w-full' rows={3} {...register('details')}></textarea>
           </label>
-          <div className='flex flex-col justify-between py-4'>
-            <PreviousButton />
-            <NextButton isLoading={formState.isSubmitting} />
+          <div className='py-4'>
+            <div className='flex justify-between py-4'>
+              <PreviousButton />
+              <NextButton isLoading={formState.isSubmitting} />
+            </div>
           </div>
         </div>
       </form>

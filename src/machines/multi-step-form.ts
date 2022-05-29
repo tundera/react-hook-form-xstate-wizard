@@ -98,7 +98,8 @@ const multiStepFormMachine = createMachine<MultiStepFormMachineContext, MultiSte
           },
           submitting: {
             invoke: {
-              src: 'submitPayment',
+              src: (data) => () => alert(JSON.stringify(data, null, 2)),
+
               onDone: {
                 target: 'complete',
               },
@@ -121,7 +122,6 @@ const multiStepFormMachine = createMachine<MultiStepFormMachineContext, MultiSte
     },
   },
   {
-    services: { submitPayment: () => () => {} },
     actions: {
       clearErrorMessage: assign((context, event) => {
         return {

@@ -42,7 +42,7 @@ export default function OrderStep() {
   }
 
   return (
-    <div className='mt-8 max-w-md'>
+    <div className='mt-8'>
       <Progress current={2} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className='grid grid-cols-1 gap-6'>
@@ -67,7 +67,7 @@ export default function OrderStep() {
             </select>
           </label>
           <div className='py-4'>
-            <div className='flex flex-col justify-between py-4'>
+            <div className='flex justify-between py-4'>
               <PreviousButton />
               <NextButton isLoading={formState.isSubmitting} />
             </div>

@@ -5,7 +5,7 @@ type NextButtonProps = {
 const NextButton = ({ isLoading = false }: NextButtonProps) => {
   return (
     <button
-      className='inline-flex w-full items-center justify-center rounded-md bg-indigo-500 px-4 py-4 text-sm font-semibold text-white shadow transition duration-150 ease-in-out hover:bg-indigo-400'
+      className='inline-flex w-40 items-center justify-center rounded-md bg-indigo-500 px-4 py-4 text-sm font-semibold text-white shadow transition duration-150 ease-in-out hover:bg-indigo-400'
       type='submit'
     >
       {isLoading ? (
